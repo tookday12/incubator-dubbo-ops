@@ -21,13 +21,27 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
+
 @SpringBootApplication
 public class DubboAdminApplication {
 
 	public static void main(String[] args) {
+		if(args!=null) {
+			 for(String arg:args) {
+			    	if(arg.startsWith("dubbo.registry.address")) {
+			    		String address=arg.substring(arg.indexOf("=")+1);
+			    		if(!StringUtils.isEmpty(address)) {
+			    			System.setProperty("dubbo.registry.address", address);
+			    			break;
+			    		}
+			    	}
+			    }
+		}
 		ApplicationContext act = SpringApplication.run(DubboAdminApplication.class, args);
 		SpringUtil.setApplicationContext(act);
-
-
 	}
+	
+	
+	
 }
